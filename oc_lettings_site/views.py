@@ -6,6 +6,8 @@ Il est principalement responsable de la gestion et de l'affichage de la page d'a
 
 
 from django.shortcuts import render
+import sentry_sdk
+from django.http import HttpResponseNotFound, HttpResponseServerError
 
 
 # Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie quam lobortis leo
@@ -27,6 +29,19 @@ def index(request):
         HttpResponse: La page rendue 'index.html' du projet.
     """
     return render(request, 'index.html')
+
+
+def custom_page_not_found(request, exception=None):
+    """Gère les erreurs 404 et les envoie à Sentry"""
+    sentry_sdk.capture_message("Page not found!", level="error")
+    return render(request, '404.html', status=404)
+
+
+# Handler pour les erreurs 500
+def custom_server_error(request):
+    """Gère les erreurs 500 et les envoie à Sentry"""
+    sentry_sdk.capture_message("Internal server error!", level="error")
+    return render(request, '500.html', status=500)
 
 
 # test template personnalisée pour erreur 500
