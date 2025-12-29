@@ -1,4 +1,8 @@
 **/__pycache__
 *.pyc
 .coverage
-env
+.env
+*.env
+
+env/
+.env/
