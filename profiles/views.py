@@ -8,7 +8,10 @@ pages de détail pour chaque profil individuel.
 
 from django.shortcuts import render
 from profiles.models import Profile
+from django.http import Http404
+import logging
 
+logger = logging.getLogger(__name__)
 
 # Sed placerat quam in pulvinar commodo. Nullam laoreet consectetur ex,
 # sed consequat libero pulvinar eget. Fusc
@@ -52,6 +55,11 @@ def profile(request, username):
         HttpResponse: La page rendue 'profiles/profile.html' avec les détails
                       du profil.
     """
-    profile = Profile.objects.get(user__username=username)
-    context = {'profile': profile}
-    return render(request, 'profiles/profile.html', context)
+    try:
+        profile = Profile.objects.get(user__username=username)
+        context = {'profile': profile}
+        return render(request, 'profiles/profile.html', context)
+
+    except Profile.DoesNotExist:
+        logger.error(f"Profil pour l'utilisateur {username} introuvable")
+        raise Http404("Profil non trouvé")

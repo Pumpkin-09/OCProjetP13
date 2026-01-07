@@ -8,7 +8,10 @@ pour chaque bien immobilier.
 
 from django.shortcuts import render
 from lettings.models import Letting
+from django.http import Http404
+import logging
 
+logger = logging.getLogger(__name__)
 
 # Aenean leo magna, vestibulum et tincidunt fermentum, consectetur quis velit.
 # Sed non placerat massa. Integer est nunc, pulvinar a
@@ -59,9 +62,13 @@ def letting(request, letting_id):
         HttpResponse: La page rendue 'lettings/letting.html' avec les détails
                       de la location et son adresse.
     """
-    letting = Letting.objects.get(id=letting_id)
-    context = {
-        'title': letting.title,
-        'address': letting.address,
-    }
-    return render(request, 'lettings/letting.html', context)
+    try:
+        letting = Letting.objects.get(id=letting_id)
+        context = {
+            'title': letting.title,
+            'address': letting.address,
+        }
+        return render(request, 'lettings/letting.html', context)
+    except Letting.DoesNotExist:
+        logger.error(f"Letting {letting_id} introuvable")
+        raise Http404("Location non trouvée")
