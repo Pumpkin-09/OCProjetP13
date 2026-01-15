@@ -15,6 +15,7 @@ Pygments==2.19.2
 pytest==9.0.1
 pytest-cov==7.0.0
 pytest-django==4.11.1
+python-dotenv==1.2.1
 pytz==2025.2
 sentry-sdk==2.48.0
 sqlparse==0.5.3

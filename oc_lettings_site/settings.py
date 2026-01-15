@@ -1,5 +1,6 @@
 import os
 
+from dotenv import load_dotenv
 from pathlib import Path
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -11,8 +12,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'fp$9^593hsriajg$_%=5trot9g!1qa@ew(o-1#@=&4%=hp46(s'
+# Load environment variables from a .env file if present
+load_dotenv()
+SECRET_KEY = os.getenv("SECRET_KEY", "password")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -120,10 +122,11 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Sentry configuration
 sentry_sdk.init(
-    dsn="https://39a8fdde50b3d004025c359d1103a4c2@o4510426754973696.ingest.de.sentry.io/4510613228486736",
+    dsn=os.getenv("DSN_SENTRY"),
     # Add data like request headers and IP for users,
     # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
     integrations=[DjangoIntegration()],
     traces_sample_rate=1.0,
     send_default_pii=True,
+    enable_logs=True,
 )
