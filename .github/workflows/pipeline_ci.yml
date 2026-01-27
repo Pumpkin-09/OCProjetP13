@@ -37,11 +37,8 @@ jobs:
       - name: Linting
         run: flake8 .
 
-      - name: Vérifier la couverture des tests
-        run: --cov=.
-
-      - name: Lancer les tests
-        run: pytest
+      - name: Lancer et vérifier la couverture des tests
+        run: pytest --cov=. --cov-report=term --cov-fail-under=80
 
   build:
     runs-on: ubuntu-24.04
