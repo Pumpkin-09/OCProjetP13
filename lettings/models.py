@@ -16,7 +16,7 @@ class Address(models.Model):
     Représente une adresse postale complète.
 
     Ce modèle stocke les détails géographiques tels que le numéro, la rue,
-    la ville et le code ISO du pays. Il est lié à la table de base de données 
+    la ville et le code ISO du pays. Il est lié à la table de base de données
     'oc_lettings_site_address'.
     """
     number = models.PositiveIntegerField(validators=[MaxValueValidator(9999)])
@@ -45,8 +45,8 @@ class Letting(models.Model):
     """
     Représente une fiche de location (Letting).
 
-    Une location possède un titre unique et est associée à une adresse 
-    via une relation OneToOne. Ce modèle est lié à la table de base de données 
+    Une location possède un titre unique et est associée à une adresse
+    via une relation OneToOne. Ce modèle est lié à la table de base de données
     'oc_lettings_site_letting'.
     """
     title = models.CharField(max_length=256)

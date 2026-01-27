@@ -13,11 +13,11 @@ import sys
 
 def main():
     """
-    Définit les paramètres d'environnement pour Django et exécute la commande 
+    Définit les paramètres d'environnement pour Django et exécute la commande
     demandée via l'interface de ligne de commande.
-    
+
     Raises:
-        ImportError: Si Django n'est pas installé ou l'environnement virtuel n'est 
+        ImportError: Si Django n'est pas installé ou l'environnement virtuel n'est
                      pas activé, empêchant l'importation des outils de gestion.
     """
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'oc_lettings_site.settings')

@@ -26,7 +26,6 @@ def test_views_letting_url_200(letting_adresse_titre):
 
     path = reverse('letting', kwargs={'letting_id': letting_adresse_titre.id})
     response = client.get(path)
-    content = response.content.decode()
 
     assert resolve(path).func == views.letting
     assert response.status_code == 200
@@ -58,6 +57,6 @@ def test_views_letting_url_lien_ok(letting_adresse_titre):
     response = client.get(path)
     content = response.content.decode()
 
-    assert reverse ("profiles_index") in content
-    assert reverse ("index") in content
-    assert reverse ("lettings_index") in content
+    assert reverse("profiles_index") in content
+    assert reverse("index") in content
+    assert reverse("lettings_index") in content

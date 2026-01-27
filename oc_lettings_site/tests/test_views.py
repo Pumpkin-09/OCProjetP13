@@ -1,9 +1,8 @@
-from unittest.mock import patch
 import pytest
 
 from django.urls import reverse, resolve
 from django.test import Client
-from oc_lettings_site import settings, views
+from oc_lettings_site import views
 from pytest_django.asserts import assertTemplateUsed
 
 
@@ -29,4 +28,3 @@ def test_index_views_url_404():
 
     assert response.status_code == 404
     assertTemplateUsed(response, '404.html')
-

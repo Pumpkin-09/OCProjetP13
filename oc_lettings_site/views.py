@@ -7,7 +7,6 @@ Il est principalement responsable de la gestion et de l'affichage de la page d'a
 
 from django.shortcuts import render
 import sentry_sdk
-from django.http import HttpResponseNotFound, HttpResponseServerError
 
 
 # Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie quam lobortis leo

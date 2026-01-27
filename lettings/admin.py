@@ -1,7 +1,7 @@
 """
 Ce module configure l'interface d'administration de Django pour l'application 'lettings'.
 
-Il enregistre les modèles Letting et Address afin qu'ils puissent être gérés 
+Il enregistre les modèles Letting et Address afin qu'ils puissent être gérés
 via l'interface d'administration du site.
 """
 

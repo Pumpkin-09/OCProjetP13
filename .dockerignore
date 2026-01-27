@@ -1,0 +1,12 @@
+.env
+env/
+.git
+.github
+.gitignore
+__pychache__
+.flake8
+.coverage
+.coveragerc
+pipeline_ci.yml
+tests/
+.pytest_cache/

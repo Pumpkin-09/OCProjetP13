@@ -1,7 +1,7 @@
 """
 Ce module configure l'objet d'application (AppConfig) pour le projet principal 'oc_lettings_site'.
 
-L'AppConfig est utilisé par Django pour contenir les métadonnées du projet 
+L'AppConfig est utilisé par Django pour contenir les métadonnées du projet
 et pour définir des configurations au moment où l'application est chargée.
 """
 

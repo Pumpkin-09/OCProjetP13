@@ -1,0 +1,12 @@
+
+[flake8]
+
+exclude =
+migrations,
+env,
+.env,
+.git,
+__pycache__,
+.html,
+.coverage,
+.coveragerc
