@@ -4,7 +4,7 @@ omit =
     *test*
     *conftest.py*
     */migrations/*
-    *__init.py__
+    *__init__.py
     manage.py
     oc_lettings_site/wsgi.py
     oc_lettings_site/asgi.py
