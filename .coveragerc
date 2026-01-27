@@ -1,2 +1,10 @@
 [run]
-omit = test/*
+omit =
+    */tests/*
+    *test*
+    *conftest.py*
+    */migrations/*
+    *__init.py__
+    manage.py
+    oc_lettings_site/wsgi.py
+    oc_lettings_site/asgi.py
