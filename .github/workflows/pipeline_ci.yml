@@ -137,7 +137,7 @@ jobs:
       - name: Trigger Render deployment
         run: |
           echo "Déclenchement du déploiement sur Render..."
-          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+          curl -X POST "${{ secrets.DEPLOY_HOOK }}"
           echo "✅ Déploiement déclenché sur Render!"
       
       - name: Wait for deployment
