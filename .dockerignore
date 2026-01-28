@@ -10,3 +10,6 @@ __pychache__
 pipeline_ci.yml
 tests/
 .pytest_cache/
+docs/_build/
+docs/_static/
+docs/_templates/

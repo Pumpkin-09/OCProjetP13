@@ -149,4 +149,3 @@ jobs:
         run: |
           echo "✅ Pipeline CI/CD terminé avec succès!"
           echo "🚀 Application déployée sur Render"
-          echo "🔗 URL: https://ton-app.onrender.com"

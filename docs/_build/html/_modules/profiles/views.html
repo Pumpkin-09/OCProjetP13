@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<html lang="fr" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>profiles.views &#8212; Documentation OC-Lettings </title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=d1a510d7"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/translations.js?v=e6b791cb"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Code source de profiles.views</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Ce module contient les fonctions de vue pour l&#39;application &#39;profiles&#39;.</span>
+
+<span class="sd">Il est responsable de l&#39;affichage de la liste des profils utilisateur et des</span>
+<span class="sd">pages de détail pour chaque profil individuel.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.shortcuts</span><span class="w"> </span><span class="kn">import</span> <span class="n">render</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">profiles.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Profile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.http</span><span class="w"> </span><span class="kn">import</span> <span class="n">Http404</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="c1"># Sed placerat quam in pulvinar commodo. Nullam laoreet consectetur ex,</span>
+<span class="c1"># sed consequat libero pulvinar eget. Fusc</span>
+<span class="c1"># faucibus, urna quis auctor pharetra, massa dolor cursus neque, quis dictum lacus d</span>
+<div class="viewcode-block" id="index">
+<a class="viewcode-back" href="../../source/apps/profiles.html#profiles.views.index">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Affiche la page d&#39;index de l&#39;application &#39;profiles&#39;.</span>
+
+<span class="sd">    Cette vue récupère tous les profils (Profile) de la base de données</span>
+<span class="sd">    et les passe au template pour affichage.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request (HttpRequest): L&#39;objet requête HTTP.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        HttpResponse: La page rendue &#39;profiles/index.html&#39; avec la liste des profils.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">profiles_list</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;profiles_list&#39;</span><span class="p">:</span> <span class="n">profiles_list</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;profiles/index.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Aliquam sed metus eget nisi tincidunt ornare accumsan eget lac</span>
+<span class="c1"># laoreet neque quis, pellentesque dui. Nullam facilisis pharetra</span>
+<span class="c1"># vulputate. Sed tincidunt, dolor id facilisis fringilla, eros leo tristique lacus,</span>
+<span class="c1"># it. Nam aliquam dignissim congue. Pellentesque habitant morbi tristique</span>
+<span class="c1"># senectus et netus et males</span>
+<div class="viewcode-block" id="profile">
+<a class="viewcode-back" href="../../source/apps/profiles.html#profiles.views.profile">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">profile</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">username</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Affiche la page de détail d&#39;un profil utilisateur spécifique.</span>
+
+<span class="sd">    Récupère un profil unique en recherchant le nom d&#39;utilisateur associé</span>
+<span class="sd">    au modèle User lié.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        request (HttpRequest): L&#39;objet requête HTTP.</span>
+<span class="sd">        username (str): Le nom d&#39;utilisateur dont on veut afficher le profil.</span>
+
+
+<span class="sd">    Returns:</span>
+<span class="sd">        HttpResponse: La page rendue &#39;profiles/profile.html&#39; avec les détails</span>
+<span class="sd">                      du profil.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">Profile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user__username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;profile&#39;</span><span class="p">:</span> <span class="n">profile</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;profiles/profile.html&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="n">Profile</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Profil pour l&#39;utilisateur </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2"> introuvable&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">Http404</span><span class="p">(</span><span class="s2">&quot;Profil non trouvé&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">OC-Lettings</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Applications:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../source/apps/lettings.html">Lettings App</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/apps/profiles.html">Profiles App</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/apps/oc_lettings_site.html">OC Lettings Site (Main)</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Code du module</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2026, OpenClassrooms.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

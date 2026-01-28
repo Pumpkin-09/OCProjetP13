@@ -49,8 +49,8 @@ def profile(request, username):
 
     Args:
         request (HttpRequest): L'objet requête HTTP.
-        username (str): Le nom d'utilisateur (username) de l'utilisateur
-                        dont on veut afficher le profil.
+        username (str): Le nom d'utilisateur dont on veut afficher le profil.
+
 
     Returns:
         HttpResponse: La page rendue 'profiles/profile.html' avec les détails

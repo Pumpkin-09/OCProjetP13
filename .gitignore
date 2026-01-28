@@ -6,3 +6,6 @@
 .env.dev
 env/
 .env/
+docs/_build/
+docs/_static/
+docs/_templates/
