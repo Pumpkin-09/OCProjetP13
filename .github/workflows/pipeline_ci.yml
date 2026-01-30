@@ -40,7 +40,7 @@ jobs:
       - name: Lancer et vérifier la couverture des tests
         run: pytest -v --cov=. --cov-report=term --cov-fail-under=80
 
-  build:
+  """build:
     runs-on: ubuntu-24.04
     needs: test
     steps:
@@ -127,7 +127,7 @@ jobs:
         run: |
           echo "✅ Image poussée sur Docker Hub avec succès!"
           echo "Tags: ${{ steps.meta.outputs.tags }}"
-
+"""
   # JOB 4 : Déploiement sur Render
   deploy-to-render:
     needs: push-to-docker-hub
