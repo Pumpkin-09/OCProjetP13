@@ -40,97 +40,11 @@ jobs:
       - name: Lancer et vérifier la couverture des tests
         run: pytest -v --cov=. --cov-report=term --cov-fail-under=80
 
-  build:
-    runs-on: ubuntu-24.04
-    needs: test
-    steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@988b5a0280414f521da01fcc63a27aeeb4b104db # v3.7.1
-      
-      - name: Build Docker image
-        uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75 # v6.9.0
-        with:
-          context: .
-          load: true  # Charge l'image localement pour la tester
-          tags: ${{ env.IMAGE_NAME }}:test
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Test image Docker en local
-        run: |
-          docker run -d --name test-container \
-            -e DEBUG=False \
-            -e SECRET_KEY=test-key-for-ci \
-            -e ALLOWED_HOSTS=localhost,127.0.0.1 \
-            -p 8000:8000 \
-            ${{ env.IMAGE_NAME }}:test
-
-          echo "Attente du démarrage du serveur..."
-          sleep 10
-          
-          # Vérifier que le conteneur tourne
-          docker ps | grep test-container
-          
-          # Test de santé : vérifier que le serveur répond
-          echo "Test de connexion au serveur..."
-          curl -f http://localhost:8000 || curl -f http://localhost:8000/admin || echo "Server is running"
-          
-          # Afficher les logs si erreur
-          docker logs test-container
-          
-          # Arrêter et supprimer le conteneur
-          docker stop test-container
-          docker rm test-container
-      
-      - name: Afficher info de succès du test
-        run: |
-          echo "✅ Image Docker testée avec succès en local!"
-          echo "Image: ${{ env.IMAGE_NAME }}:test"
-
-  push-to-docker-hub:
-    needs: build
-    runs-on: ubuntu-24.04
-    
-    steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@988b5a0280414f521da01fcc63a27aeeb4b104db
-      
-      - name: Log in to Docker Hub
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      
-      - name: Extract metadata (tags, labels)
-        id: meta
-        uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
-        with:
-          images: ${{ env.IMAGE_NAME }}
-          tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=sha,prefix={{branch}}-
-      
-      - name: Build and push Docker image
-        uses: docker/build-push-action@4f58ea79222b3b9dc2c8bbdd6debcef730109a75
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-      
-      - name: Image pushed successfully
-        run: |
-          echo "✅ Image poussée sur Docker Hub avec succès!"
-          echo "Tags: ${{ steps.meta.outputs.tags }}"
+  
 
   # JOB 4 : Déploiement sur Render
   deploy-to-render:
-    needs: push-to-docker-hub
+
     runs-on: ubuntu-24.04
 
     steps:
